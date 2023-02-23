@@ -18,4 +18,27 @@ class Blockchain {
       }
       return reverse(unfold(getParent, maxHeightBlock))
     }
+
+    _addBlock(block) {
+       if (!block.isValid())
+        return
+         if (this.containsBlock(block))
+          return 
+          // check that the parent is actually existent and the advertised height is correct
+           const parent = this.blocks[block.parentHash];
+            if (parent === undefined && parent.height + 1 !== block.height ) 
+            return 
+            // Add coinbase coin to the pool of the parent 
+            const newUtxoPool = parent.utxoPool.clone();
+            newUtxoPool.addUTXO(block.coinbaseBeneficiary, 12.5)
+            block.utxoPool = newUtxoPool;
+            this.blocks[block.hash] = block; 
+            rerender() }
+
+/*
+Securing consensus is so important.
+That's why it is generally recommended to wait a certain number of blocks until you can consider a transaction to be settled
+therwise a fork can invalidate what you assumed to be the state of the ledger.
+*/
+
   }
